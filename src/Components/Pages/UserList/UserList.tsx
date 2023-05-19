@@ -4,8 +4,8 @@ import { Result, Root } from "../../../Models/UserListModel";
 import axios from "axios";
 
 function UserList(): JSX.Element {
-    const[userlist,setUserList] =useState<Result[]>([])
-    
+    const[userList,setUserList] =useState<Result[]>([])
+    const tableHeaders =["name","first name", "phone", "picture","age"]
     useEffect(()=>{ 
 		axios.get<Root>('https://randomuser.me/api/?results=10')
         .then(res =>{setUserList(res.data.results)})
@@ -13,8 +13,19 @@ function UserList(): JSX.Element {
     },[])
     return (
         <div className="UserList">
-			  {userlist.map(u => <p key={'user'+u.id}> {u.id.name},{u.name.first},{u.phone},{u.picture.thumbnail},{u.registered.age}</p>)}
-        </div>
+             <table>
+       <thead>
+        <tr>
+         {tableHeaders.map(t=><th key={t}>{t}</th>)}   
+            </tr>    
+            </thead> 
+            <tbody>
+            {userList.map(u => <tr key={'user'+u.id}><td> {u.id.name}</td>,<td>{u.name.first}</td>,<td>{u.phone}</td>,<td><img src={u.picture.thumbnail} alt={u.name.first} /></td>,<td>{u.registered.age}</td></tr>)}
+      
+
+            </tbody>
+            </table>
+            </div>
     );
 
     }
